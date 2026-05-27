@@ -1,0 +1,12 @@
+{
+  "name": "claude-toolbox",
+  "owner": { "name": "Jon Cope" },
+  "description": "Personal Claude Code plugins",
+  "plugins": [
+    {
+      "name": "time-keeper",
+      "source": "./plugins/time-keeper",
+      "description": "Injects current date/time at session start"
+    }
+  ]
+}

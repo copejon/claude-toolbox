@@ -1,0 +1,9 @@
+{
+  "name": "time-keeper",
+  "version": "1.0.0",
+  "description": "Injects the current date and time into every Claude Code session at startup",
+  "author": {
+    "name": "jcope"
+  },
+  "license": "MIT"
+}
