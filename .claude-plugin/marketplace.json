@@ -6,7 +6,20 @@
     {
       "name": "time-keeper",
       "source": "./plugins/time-keeper",
-      "description": "Injects current date/time at session start"
+      "description": "Injects current date/time at session start",
+      "version": "1.0.0"
+    },
+    {
+      "name": "todoist-sync",
+      "source": "./plugins/todoist-sync",
+      "description": "One-way Jira to Todoist sync with priority assignment, section placement, sprint deadlines, and drift detection",
+      "version": "1.0.0"
+    },
+    {
+      "name": "aws-stack",
+      "source": "./plugins/aws-stack",
+      "description": "Create, delete, describe, and manage AWS EC2 instances via CloudFormation",
+      "version": "1.0.0"
     }
   ]
 }

@@ -1,0 +1,9 @@
+{
+  "name": "aws-stack",
+  "description": "Create, delete, describe, and manage AWS EC2 instances via CloudFormation",
+  "version": "1.0.0",
+  "author": {
+    "name": "jcope"
+  },
+  "license": "MIT"
+}

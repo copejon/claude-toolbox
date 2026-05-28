@@ -1,0 +1,9 @@
+{
+  "name": "todoist-sync",
+  "description": "One-way Jira to Todoist sync with priority assignment, section placement, sprint deadlines, and drift detection",
+  "version": "1.0.0",
+  "author": {
+    "name": "jcope"
+  },
+  "license": "MIT"
+}
