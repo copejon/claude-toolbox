@@ -2,6 +2,7 @@
   "name": "claude-toolbox",
   "owner": { "name": "Jon Cope" },
   "description": "Personal Claude Code plugins",
+  "allowCrossMarketplaceDependenciesOn": ["edge-tooling"],
   "plugins": [
     {
       "name": "time-keeper",
@@ -19,6 +20,12 @@
       "name": "aws-stack",
       "source": "./plugins/aws-stack",
       "description": "Create, delete, describe, and manage AWS EC2 instances via CloudFormation",
+      "version": "1.0.0"
+    },
+    {
+      "name": "edge-ic-hooks",
+      "source": "./plugins/edge-ic-hooks",
+      "description": "Auto-checkpoint hook that triggers edge-ic daily TODO updates every N user messages",
       "version": "1.0.0"
     }
   ]

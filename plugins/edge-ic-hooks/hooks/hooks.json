@@ -1,0 +1,16 @@
+{
+  "description": "Auto-checkpoint: trigger edge-ic daily TODO update every SAVE_INTERVAL user messages",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/edge-ic-save-hook.sh\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

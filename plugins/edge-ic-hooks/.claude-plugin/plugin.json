@@ -1,0 +1,12 @@
+{
+  "name": "edge-ic-hooks",
+  "description": "Auto-checkpoint hook that triggers edge-ic daily TODO updates every N user messages",
+  "version": "1.0.0",
+  "author": {
+    "name": "jcope"
+  },
+  "license": "MIT",
+  "dependencies": [
+    { "name": "edge-ic", "marketplace": "edge-tooling" }
+  ]
+}
