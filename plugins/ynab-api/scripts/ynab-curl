@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Usage: ./scripts/ynab-curl METHOD /path [body_file]
+# Examples:
+#   ./scripts/ynab-curl GET /plans
+#   ./scripts/ynab-curl POST /plans/last-used/transactions /tmp/body.json
+
+set -euo pipefail
+
+BASE_URL="https://api.ynab.com/v1"
+
+if [ -z "${YNAB_TOKEN:-}" ]; then
+  for candidate in \
+    "$HOME/.secrets/ynab_token.txt" \
+    "$HOME/.secrets/YNAB_TOKEN.txt"; do
+    if [ -f "$candidate" ]; then
+      YNAB_TOKEN="$(cat "$candidate")"
+      export YNAB_TOKEN
+      break
+    fi
+  done
+fi
+
+if [ -z "${YNAB_TOKEN:-}" ]; then
+  echo "YNAB_TOKEN is not set. Set the env var or place the token in ~/.secrets/ynab_token.txt" >&2
+  exit 1
+fi
+
+METHOD="${1:?Usage: ynab-curl METHOD /path [body_file]}"
+PATH_ARG="${2:?Usage: ynab-curl METHOD /path [body_file]}"
+BODY_FILE="${3:-}"
+
+ARGS=(-s -X "$METHOD" -H "Authorization: Bearer $YNAB_TOKEN" -H "Content-Type: application/json")
+
+if [ -n "$BODY_FILE" ]; then
+  ARGS+=(-d "@$BODY_FILE")
+fi
+
+curl "${ARGS[@]}" "${BASE_URL}${PATH_ARG}"

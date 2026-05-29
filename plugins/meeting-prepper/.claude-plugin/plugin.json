@@ -1,0 +1,9 @@
+{
+  "name": "meeting-prepper",
+  "description": "Synthesize status briefings from GitHub PRs and linked Jira tickets for community meetings",
+  "version": "1.0.0",
+  "author": {
+    "name": "jcope"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "ynab-api",
+  "description": "YNAB budget management agent — API endpoint skills, reconciliation workflows, transaction matching, and bulk operations via ynab-curl wrapper",
+  "version": "1.0.0",
+  "author": {
+    "name": "jcope"
+  },
+  "license": "MIT"
+}
