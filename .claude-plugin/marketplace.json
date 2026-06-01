@@ -39,6 +39,12 @@
       "source": "./plugins/meeting-prepper",
       "description": "Synthesize status briefings from GitHub PRs and linked Jira tickets for community meetings",
       "version": "1.0.0"
+    },
+    {
+      "name": "daily-report-remote",
+      "source": "./plugins/daily-report-remote",
+      "description": "Collect daily report data from remote server via SSH and generate enhanced Slack-ready standup reports",
+      "version": "1.0.0"
     }
   ]
 }

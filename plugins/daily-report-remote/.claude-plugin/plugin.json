@@ -1,0 +1,12 @@
+{
+  "name": "daily-report-remote",
+  "description": "Collect daily report data from a remote server via SSH for enhanced daily standup reports",
+  "version": "1.0.0",
+  "author": {
+    "name": "jcope"
+  },
+  "license": "MIT",
+  "dependencies": [
+    { "name": "edge-ic", "marketplace": "edge-tooling" }
+  ]
+}
