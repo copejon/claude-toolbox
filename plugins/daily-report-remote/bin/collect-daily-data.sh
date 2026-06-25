@@ -4,7 +4,7 @@
 # Usage: collect-daily-data.sh [YYYY-MM-DD]
 #   Defaults to today's date if not specified.
 #
-# Output: JSON object with todo, git_logs, and sessions fields to stdout.
+# Output: JSON object with todo and git_logs fields to stdout.
 #         Diagnostic messages go to stderr.
 
 set -euo pipefail
@@ -21,7 +21,6 @@ REPO_ROOTS=(
     "$HOME/microshift"
     "$HOME/Workspace/github.com/openshift"
     "$HOME/Workspace/github.com/copejon"
-    "$HOME/Workspace/claude"
 )
 
 discover_repos() {
@@ -96,109 +95,6 @@ git_logs_json() {
     echo "]"
 }
 
-# --- Session analysis ---
-session_json() {
-    local analyzer="$HOME/.claude/plugins/marketplaces/claude-plugins-official/plugins/session-report/skills/session-report/analyze-sessions.mjs"
-    if [ -f "$analyzer" ] && command -v node &>/dev/null; then
-        node "$analyzer" --json --since 1d 2>/dev/null || echo '{"error": "analyzer failed"}'
-    else
-        echo '{"error": "analyzer not available"}'
-    fi
-}
-
-# --- MemPalace diary entries ---
-mempalace_json() {
-    if ! command -v mempalace &>/dev/null; then
-        echo '{"error": "mempalace not installed"}'
-        return
-    fi
-
-    # Search diary entries across all wings for today's date.
-    # Run multiple searches: by date and by "SESSION:DATE" to maximize recall.
-    # mempalace search is semantic, so we cast a wide net and filter by date.
-    local raw
-    raw=$(
-        mempalace search "SESSION:$DATE" --room diary --results 20 2>/dev/null
-        mempalace search "$DATE" --room diary --results 20 2>/dev/null
-        mempalace search "CHECKPOINT:$DATE" --room diary --results 20 2>/dev/null
-    )
-
-    if [ -z "$raw" ]; then
-        echo '{"entries": [], "message": "no diary results"}'
-        return
-    fi
-
-    local tmpfile
-    tmpfile=$(mktemp)
-    printf '%s' "$raw" > "$tmpfile"
-    trap "rm -f '$tmpfile'" RETURN
-
-    # Parse the search output into structured JSON.
-    # Each result block starts with "[N] wing / room" and content follows indented.
-    python3 - "$DATE" "$tmpfile" <<'PYEOF'
-import sys, json, re
-
-target_date = sys.argv[1]
-with open(sys.argv[2]) as f:
-    text = f.read()
-entries = []
-blocks = re.split(r'\n  \[\d+\] ', text)
-for block in blocks[1:]:  # skip header
-    lines = block.strip().split('\n')
-    if not lines:
-        continue
-    # First line: 'wing / room'
-    loc = lines[0].strip()
-    wing = loc.split('/')[0].strip() if '/' in loc else loc.strip()
-
-    # Find content lines (after 'Match:' line, indented)
-    content_lines = []
-    past_match = False
-    for line in lines[1:]:
-        stripped = line.strip()
-        if stripped.startswith('Match:'):
-            past_match = True
-            continue
-        if stripped.startswith('Source:'):
-            continue
-        if past_match and stripped and not stripped.startswith('─') and not stripped.startswith('==='):
-            content_lines.append(stripped)
-
-    if content_lines:
-        content = '\n'.join(content_lines)
-        # Strip embedded search headers and trailing result boundaries
-        content = re.sub(r'={5,}[\s\S]*?Results for:.*?={5,}', '', content)
-        content = re.sub(r'\n\s*Results for:.*$', '', content, flags=re.MULTILINE)
-        content = re.sub(r'\n\s*Room:.*$', '', content, flags=re.MULTILINE)
-        content = content.strip()
-        # Match date as an AAAK diary marker (SESSION:DATE, CHECKPOINT:DATE, or TEST:DATE)
-        # not just any mention of the date string buried in noise
-        td = re.escape(target_date)
-        date_match = bool(re.search(
-            rf'(?:SESSION|CHECKPOINT|TEST):{td}|^{td}\b',
-            content, re.MULTILINE
-        ))
-        entries.append({
-            'wing': wing,
-            'content': content,
-            'date_match': date_match,
-        })
-
-# Deduplicate (multiple searches may return the same entry)
-seen = set()
-unique = []
-for e in entries:
-    key = e['content'][:120]
-    if key not in seen:
-        seen.add(key)
-        unique.append(e)
-
-# Only include entries that contain today's date
-dated = [e for e in unique if e['date_match']]
-print(json.dumps({'entries': dated, 'total_searched': len(unique), 'date_filtered': len(dated)}))
-PYEOF
-}
-
 # --- Assemble ---
 {
     echo "{"
@@ -206,8 +102,6 @@ PYEOF
     echo "\"hostname\": $(jq -n --arg h "$HOST" '$h'),"
     echo "\"collected_at\": $(jq -n --arg t "$(date -Iseconds)" '$t'),"
     echo "\"todo\": $(todo_json),"
-    echo "\"git_logs\": $(git_logs_json),"
-    echo "\"sessions\": $(session_json),"
-    echo "\"mempalace\": $(mempalace_json)"
+    echo "\"git_logs\": $(git_logs_json)"
     echo "}"
 } | jq .
