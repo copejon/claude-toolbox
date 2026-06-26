@@ -1,7 +1,18 @@
 {
-  "description": "Auto-checkpoint: trigger edge-ic daily TODO update every SAVE_INTERVAL user messages",
+  "description": "Trigger edge-ic daily TODO update on session exit and before context compaction",
   "hooks": {
     "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/edge-ic-save-hook.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
       {
         "hooks": [
           {
