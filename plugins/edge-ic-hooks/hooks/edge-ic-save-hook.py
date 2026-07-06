@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # Hook for edge-ic daily TODO updates.
-# Fires on Stop and PreCompact — blocks and tells the AI to update the daily TODO.
-# On re-entry with stop_hook_active=true, passes through.
+# Fires on PreCompact (auto only) — blocks and tells the AI to update the daily TODO.
 
 import json
 import os
@@ -20,15 +19,16 @@ if auto_update.lower() in ("false", "0", "no"):
 
 raw_input = sys.stdin.read()
 
-stop_hook_active = False
 try:
     data = json.loads(raw_input)
-    sha = data.get("stop_hook_active", False)
-    stop_hook_active = sha is True or str(sha).lower() in ("true", "1", "yes")
 except Exception:
-    pass
+    data = {}
 
-if stop_hook_active:
+# Only block on auto-compaction, not manual /compact
+if data.get("trigger") == "manual":
+    passthrough()
+
+if data.get("stop_hook_active") in (True, "true", "1", "yes"):
     passthrough()
 
 print(json.dumps({
