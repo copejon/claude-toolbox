@@ -1,17 +1,6 @@
 {
-  "description": "Trigger edge-ic daily TODO update on session exit and before context compaction",
+  "description": "Trigger edge-ic daily TODO update before context compaction",
   "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/edge-ic-save-hook.py\"",
-            "timeout": 30
-          }
-        ]
-      }
-    ],
     "PreCompact": [
       {
         "hooks": [
