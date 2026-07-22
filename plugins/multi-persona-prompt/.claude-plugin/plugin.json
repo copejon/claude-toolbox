@@ -1,0 +1,9 @@
+{
+  "name": "multi-persona-prompt",
+  "description": "Synthesize adversarial multi-persona analysis prompts and run stakeholder analyses via subagents",
+  "version": "1.0.0",
+  "author": {
+    "name": "jcope"
+  },
+  "license": "MIT"
+}

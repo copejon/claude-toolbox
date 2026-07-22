@@ -45,6 +45,12 @@
       "source": "./plugins/daily-report-remote",
       "description": "Collect daily report data from remote server via SSH and generate deterministic Slack-ready standup reports",
       "version": "1.1.0"
+    },
+    {
+      "name": "multi-persona-prompt",
+      "source": "./plugins/multi-persona-prompt",
+      "description": "Synthesize adversarial multi-persona analysis prompts and run stakeholder analyses via subagents",
+      "version": "1.0.0"
     }
   ]
 }
