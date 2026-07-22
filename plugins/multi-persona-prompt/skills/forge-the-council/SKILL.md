@@ -1,13 +1,19 @@
 ---
-name: synthesize-multi-persona-prompt
-description: "Use when the user wants to create an adversarial multi-persona analysis prompt, synthesize stakeholder perspectives into a prompt, generate a debate-style multi-viewpoint prompt, or build a panel of personas for analysis. Triggers on 'multi-persona', 'stakeholder analysis', 'adversarial prompt', 'perspective synthesis', 'create personas', 'synthesize prompt', 'persona panel', or 'multi-viewpoint'."
+name: forge-the-council
+description: "This skill should be used when the user wants to create an adversarial multi-persona analysis prompt, synthesize stakeholder perspectives into a prompt, generate a debate-style multi-viewpoint prompt, or build a panel of expert personas for analysis. Triggers on 'multi-persona', 'stakeholder analysis', 'adversarial prompt', 'perspective synthesis', 'create personas', 'synthesize prompt', 'persona panel', 'multi-viewpoint', 'panel of experts', 'debate prompt', 'forge the council', or 'forge a council'."
 argument-hint: "[topic or use case description]"
 user-invocable: true
+version: 1.0.0
+allowed-tools:
+  - Read
+  - Write
+  - AskUserQuestion
+  - Bash
 ---
 
-# Synthesize Multi-Persona Prompt
+# Forge the Council
 
-Synthesize an adversarial multi-persona analysis prompt through a guided interview. The output is a ready-to-use prompt where multiple stakeholder personas with genuinely conflicting priorities analyze a subject, surface tensions, and produce a synthesized recommendation.
+Forge an adversarial council of stakeholder personas through a guided interview. The output is a ready-to-use prompt where multiple personas with genuinely conflicting priorities analyze a subject, surface tensions, and produce a synthesized recommendation.
 
 ## Methodology Constraint
 
@@ -15,37 +21,14 @@ This multi-persona framework is intentionally designed for broad application acr
 
 ## Process Flow
 
-```dot
-digraph synthesis {
-    "Stage 0: Collect Use Case" [shape=box];
-    "Stage 1: Identify Stakeholders" [shape=box];
-    "User confirms personas?" [shape=diamond];
-    "Stage 2: Define Personas" [shape=box];
-    "User approves definitions?" [shape=diamond];
-    "Stage 3: Customize Protocol" [shape=box];
-    "Stage 4: Assemble Prompt" [shape=box];
-    "Name the Prompt" [shape=box];
-    "Save to tmp" [shape=box];
-    "Persist as agent?" [shape=diamond];
-    "Create agent file" [shape=box];
-    "Done" [shape=doublecircle];
-
-    "Stage 0: Collect Use Case" -> "Stage 1: Identify Stakeholders";
-    "Stage 1: Identify Stakeholders" -> "User confirms personas?";
-    "User confirms personas?" -> "Stage 1: Identify Stakeholders" [label="revise"];
-    "User confirms personas?" -> "Stage 2: Define Personas" [label="confirmed"];
-    "Stage 2: Define Personas" -> "User approves definitions?";
-    "User approves definitions?" -> "Stage 2: Define Personas" [label="revise"];
-    "User approves definitions?" -> "Stage 3: Customize Protocol" [label="approved"];
-    "Stage 3: Customize Protocol" -> "Stage 4: Assemble Prompt";
-    "Stage 4: Assemble Prompt" -> "Name the Prompt";
-    "Name the Prompt" -> "Save to tmp";
-    "Save to tmp" -> "Persist as agent?";
-    "Persist as agent?" -> "Create agent file" [label="yes"];
-    "Persist as agent?" -> "Done" [label="no"];
-    "Create agent file" -> "Done";
-}
-```
+1. **Stage 0**: Collect use case details
+2. **Stage 1**: Propose stakeholder personas → user confirms or revises (loop until confirmed)
+3. **Stage 2**: Define each persona in detail → user approves or revises (loop until approved)
+4. **Stage 3**: Customize interaction protocol, output format, quality controls
+5. **Stage 4**: Assemble the final prompt from the template
+6. **Name**: Propose and confirm a descriptive name for the council
+7. **Save**: Write to tmp file
+8. **Persist** (optional): Save as a reusable agent if the user chooses
 
 ## Stage 0 — Collect Use Case
 
@@ -71,7 +54,7 @@ For each proposed stakeholder, explain:
 - What unique perspective they bring
 - What conflicts might arise with the other stakeholders
 
-Present the proposals and ask the user to confirm or suggest alternatives before proceeding. Use AskUserQuestion if appropriate.
+Present the proposals and ask the user to confirm or suggest alternatives before proceeding. Use the `AskUserQuestion` tool if appropriate.
 
 ## Stage 2 — Persona Definition
 
@@ -93,7 +76,7 @@ Get user approval before proceeding.
 
 ## Stage 4 — Final Assembly
 
-Read the blank template from `references/template.md`. Generate the complete filled-in prompt with:
+Read the blank template from the `references/template.md` file located in this skill's directory. Generate the complete filled-in prompt with:
 - The user's specific context inserted
 - All stakeholder personas fully defined with customized mandates
 - Customized interaction protocol and output format
@@ -109,11 +92,13 @@ Verify the filled template:
 - Creates authentic potential for stakeholder tension
 - Is immediately usable without further editing
 
-## Post-Synthesis — Name the Prompt
+## Post-Synthesis
 
-Propose a concise, descriptive name for the persona set (e.g., "Cloud Migration Strategy Panel", "Product Launch Risk Council", "Career Pivot Advisory Board"). Present the suggested name and let the user accept or provide their own.
+### Name the Council
 
-## Post-Synthesis — Save to Temp
+Propose a concise, descriptive name for the council (e.g., "Cloud Migration Strategy Council", "Product Launch Risk Council", "Career Pivot Advisory Board"). Present the suggested name and let the user accept or provide their own.
+
+### Save to Temp
 
 Always save the synthesized prompt to `/tmp/persona-<slugified-name>.md`. Include YAML frontmatter:
 
@@ -131,9 +116,9 @@ type: multi-persona-prompt
 
 The prompt body follows the frontmatter. Inform the user of the file location.
 
-## Post-Synthesis — Persist as Agent (Optional)
+### Persist as Agent (Optional)
 
-Ask the user: "Persist this as a reusable agent?"
+Ask the user: "Persist this council as a reusable agent?"
 
 If yes, ask: "User-level (`~/.claude/agents/`) or project-level (`.claude/agents/`)?"
 

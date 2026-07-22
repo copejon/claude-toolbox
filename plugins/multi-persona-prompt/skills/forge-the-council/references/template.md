@@ -12,11 +12,13 @@ Constraints: [ANY LIMITATIONS, REQUIREMENTS, OR BOUNDARIES]
 </context>
 
 <personas>
+<!-- Scale to 2-4 personas. Add or remove <persona> blocks as needed. -->
 
 <persona id="1">
 <role>Stakeholder A: [TITLE/PERSPECTIVE]</role>
 <focus>[PRIMARY CONCERNS AND PRIORITIES]</focus>
 <mandate>
+<!-- REPLACE ALL BULLETS BELOW with domain-specific analysis questions. -->
 Analyze the subject through your lens, considering:
 - Your core responsibilities and success metrics
 - Risks and opportunities specific to your domain
@@ -29,6 +31,7 @@ Analyze the subject through your lens, considering:
 <role>Stakeholder B: [TITLE/PERSPECTIVE]</role>
 <focus>[PRIMARY CONCERNS AND PRIORITIES]</focus>
 <mandate>
+<!-- REPLACE ALL BULLETS BELOW with domain-specific analysis questions. -->
 Analyze the subject through your lens, considering:
 - Your core responsibilities and success metrics
 - Risks and opportunities specific to your domain
@@ -41,6 +44,7 @@ Analyze the subject through your lens, considering:
 <role>Stakeholder C: [TITLE/PERSPECTIVE]</role>
 <focus>[PRIMARY CONCERNS AND PRIORITIES]</focus>
 <mandate>
+<!-- REPLACE ALL BULLETS BELOW with domain-specific analysis questions. -->
 Analyze the subject through your lens, considering:
 - Your core responsibilities and success metrics
 - Risks and opportunities specific to your domain
